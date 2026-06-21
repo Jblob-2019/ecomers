@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product — Nebula</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">NEBULA</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a class="nav-link" href="index.html">Home</a></li>
+          <li><a class="nav-link active" href="shop.html">Shop</a></li>
+          <li><a class="nav-link" href="about.html">About</a></li>
+          <li><a class="nav-link" href="about.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">
+          <span class="material-symbols-outlined" data-theme-icon>light_mode</span>
+        </button>
+        <a class="icon-btn" href="cart.html" aria-label="Cart">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span class="cart-badge" data-cart-count>0</span>
+        </a>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" data-mobile-menu>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <main id="main" style="padding-top: 96px;">
+    <div class="container">
+      <nav class="breadcrumb" id="breadcrumb"></nav>
+      <div id="product-root"></div>
+
+      <!-- Related products -->
+      <section style="margin-top: 80px;">
+        <div class="section-header fade-up">
+          <div>
+            <h2 class="section-title">You May Also Like</h2>
+            <p class="section-subtitle">Hand-picked from similar categories.</p>
+          </div>
+        </div>
+        <div class="product-grid fade-up" id="related-grid"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="font-size:1.75rem">NEBULA</div>
+          <p class="footer-tagline">Designed for the future. Built for everyday life.</p>
+          <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><span class="material-symbols-outlined">photo_camera</span></a>
+            <a href="#" aria-label="Twitter"><span class="material-symbols-outlined">alternate_email</span></a>
+            <a href="#" aria-label="YouTube"><span class="material-symbols-outlined">play_circle</span></a>
+            <a href="#" aria-label="LinkedIn"><span class="material-symbols-outlined">work</span></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="shop.html?cat=audio">Audio</a></li>
+            <li><a href="shop.html?cat=wearables">Wearables</a></li>
+            <li><a href="shop.html?cat=tech">Tech</a></li>
+            <li><a href="shop.html?cat=living">Living</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#contact">Contact</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Warranty</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Nebula Inc. All rights reserved.</span>
+        <span>Privacy · Terms · Cookies</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id') || 'p1';
+    const product = PRODUCTS.find(p => p.id === id) || PRODUCTS[0];
+
+    // Breadcrumb
+    document.getElementById('breadcrumb').innerHTML = `
+      <a href="index.html">Home</a>
+      <span class="material-symbols-outlined">chevron_right</span>
+      <a href="shop.html">Shop</a>
+      <span class="material-symbols-outlined">chevron_right</span>
+      <a href="shop.html?cat=${product.category.toLowerCase()}">${product.category}</a>
+      <span class="material-symbols-outlined">chevron_right</span>
+      <span class="current">${product.name}</span>
+    `;
+
+    // Render product detail
+    const root = document.getElementById('product-root');
+    const variants = ['Standard', 'Pro', 'Max'];
+    const sizes = product.category === 'Audio' ? null : ['S', 'M', 'L'];
+
+    root.innerHTML = `
+      <div class="product-detail fade-up">
+        <div>
+          <div class="gallery-main">
+            <img src="${product.image}" alt="${product.name}" id="main-image"/>
+          </div>
+          <div class="gallery-thumbs">
+            <div class="gallery-thumb active"><img src="${product.image}" alt="thumb 1"/></div>
+            <div class="gallery-thumb"><img src="${product.image}" alt="thumb 2"/></div>
+            <div class="gallery-thumb"><img src="${product.image}" alt="thumb 3"/></div>
+            <div class="gallery-thumb"><img src="${product.image}" alt="thumb 4"/></div>
+          </div>
+        </div>
+        <div class="detail-info">
+          <span class="product-category">${product.category}</span>
+          <h1>${product.name}</h1>
+          <div class="detail-meta">
+            <div class="detail-rating">
+              <span class="stars">${stars(product.rating)}</span>
+              <span>${product.rating} · ${product.reviews} reviews</span>
+            </div>
+            <span class="detail-sku">SKU: ${product.sku}</span>
+          </div>
+          <div class="detail-price">
+            $${product.price.toFixed(2)}
+            ${product.oldPrice ? `<span class="detail-price-old">$${product.oldPrice.toFixed(2)}</span>` : ''}
+          </div>
+          <p class="detail-desc">${product.description}</p>
+
+          <div class="variant-group">
+            <div class="variant-label">Color</div>
+            <div class="variant-options" id="color-options">
+              ${product.colors.map((c, i) => `<div class="color-swatch ${i===0?'active':''}" style="background:${c}" data-color="${c}"></div>`).join('')}
+            </div>
+          </div>
+
+          ${sizes ? `
+          <div class="variant-group">
+            <div class="variant-label">Size</div>
+            <div class="variant-options" id="size-options">
+              ${sizes.map((s, i) => `<button class="variant-btn ${i===1?'active':''}" data-size="${s}">${s}</button>`).join('')}
+            </div>
+          </div>` : ''}
+
+          <div class="variant-group">
+            <div class="variant-label">Quantity</div>
+            <div class="qty-control">
+              <button class="qty-btn" id="qty-dec" aria-label="Decrease">−</button>
+              <input class="qty-input" type="number" id="qty-input" value="1" min="1" max="99"/>
+              <button class="qty-btn" id="qty-inc" aria-label="Increase">+</button>
+            </div>
+          </div>
+
+          <div class="detail-actions">
+            <button class="btn btn-primary btn-lg" id="add-cart-btn"
+                    data-add-to-cart
+                    data-id="${product.id}"
+                    data-name="${product.name}"
+                    data-price="${product.price}"
+                    data-image="${product.image}">
+              <span class="material-symbols-outlined">shopping_cart</span>
+              Add to Cart
+            </button>
+            <button class="btn btn-secondary btn-lg" data-fav-toggle data-id="${product.id}">
+              <span class="material-symbols-outlined">favorite_border</span>
+              Wishlist
+            </button>
+          </div>
+
+          <div class="accordion">
+            <div class="accordion-item open">
+              <button class="accordion-header">
+                <span>Description</span>
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+              <div class="accordion-content">${product.description} Crafted with premium materials and rigorously tested for daily use. Backed by our 2-year warranty and 30-day return policy.</div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-header">
+                <span>Specifications</span>
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+              <div class="accordion-content">
+                <ul style="padding-left: 20px;">
+                  <li>Premium materials</li>
+                  <li>2-year manufacturer warranty</li>
+                  <li>Compatible with major platforms</li>
+                  <li>Includes setup guide and accessories</li>
+                  <li>SKU: ${product.sku}</li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-header">
+                <span>Shipping &amp; Returns</span>
+                <span class="material-symbols-outlined">expand_more</span>
+              </button>
+              <div class="accordion-content">Free shipping on orders over $50. Standard delivery 3-7 business days. Express options available at checkout. 30-day no-questions-asked returns. Return shipping is free.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Wire up quantity
+    let qty = 1;
+    const qtyInput = document.getElementById('qty-input');
+    document.getElementById('qty-inc').addEventListener('click', () => {
+      qty = Math.min(99, qty + 1);
+      qtyInput.value = qty;
+    });
+    document.getElementById('qty-dec').addEventListener('click', () => {
+      qty = Math.max(1, qty - 1);
+      qtyInput.value = qty;
+    });
+    qtyInput.addEventListener('change', () => {
+      qty = Math.max(1, Math.min(99, parseInt(qtyInput.value) || 1));
+      qtyInput.value = qty;
+    });
+
+    // Update add to cart with current qty
+    document.getElementById('add-cart-btn').addEventListener('click', () => {
+      const btn = document.getElementById('add-cart-btn');
+      btn.dataset.qty = qty;
+    }, true);
+
+    // Accordion
+    document.querySelectorAll('.accordion-header').forEach(h => {
+      h.addEventListener('click', () => {
+        const item = h.parentElement;
+        const wasOpen = item.classList.contains('open');
+        document.querySelectorAll('.accordion-item').forEach(i => i.classList.remove('open'));
+        if (!wasOpen) item.classList.add('open');
+      });
+    });
+
+    // Variant buttons
+    document.querySelectorAll('.variant-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.parentElement.querySelectorAll('.variant-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+    document.querySelectorAll('.color-swatch').forEach(sw => {
+      sw.addEventListener('click', () => {
+        sw.parentElement.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+        sw.classList.add('active');
+      });
+    });
+
+    // Gallery thumbs
+    document.querySelectorAll('.gallery-thumb').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.gallery-thumb').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+      });
+    });
+
+    // Related products
+    const related = PRODUCTS.filter(p => p.id !== product.id && p.category === product.category).slice(0, 4);
+    const filler = PRODUCTS.filter(p => p.id !== product.id && p.category !== product.category).slice(0, 4 - related.length);
+    renderProducts(document.getElementById('related-grid'), [...related, ...filler]);
+
+    document.title = `${product.name} — Nebula`;
+  </script>
+</body>
+</html>

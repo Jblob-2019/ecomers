@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart &amp; Checkout — Nebula</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✦</text></svg>" />
+</head>
+<body>
+
+  <a href="#main" class="skip-link">Skip to content</a>
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">NEBULA</a>
+      <nav>
+        <ul class="nav-links">
+          <li><a class="nav-link" href="index.html">Home</a></li>
+          <li><a class="nav-link active" href="shop.html">Shop</a></li>
+          <li><a class="nav-link" href="about.html">About</a></li>
+          <li><a class="nav-link" href="about.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" data-theme-toggle aria-label="Toggle theme">
+          <span class="material-symbols-outlined" data-theme-icon>light_mode</span>
+        </button>
+        <a class="icon-btn" href="cart.html" aria-label="Cart">
+          <span class="material-symbols-outlined">shopping_cart</span>
+          <span class="cart-badge" data-cart-count>0</span>
+        </a>
+        <button class="icon-btn mobile-toggle" data-mobile-toggle aria-label="Menu">
+          <span class="material-symbols-outlined">menu</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="mobile-menu" data-mobile-menu>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="shop.html">Shop</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="about.html#contact">Contact</a></li>
+    </ul>
+  </div>
+
+  <main id="main" style="padding-top: 96px;">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span class="material-symbols-outlined">chevron_right</span>
+        <a href="shop.html">Shop</a>
+        <span class="material-symbols-outlined">chevron_right</span>
+        <span class="current">Cart</span>
+      </nav>
+
+      <h1 class="section-title">Your Cart</h1>
+
+      <div class="cart-layout">
+        <!-- Cart items -->
+        <div>
+          <div class="cart-items" id="cart-items"></div>
+
+          <div style="margin-top: 32px;">
+            <h2 style="font-size: 1.25rem; margin-bottom: 16px; font-family: var(--body-font); text-transform: none; letter-spacing: 0; font-weight: 700;">Shipping Information</h2>
+            <form id="checkout-form" onsubmit="event.preventDefault(); placeOrder();">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="firstName">First Name</label>
+                  <input class="form-input" type="text" id="firstName" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="lastName">Last Name</label>
+                  <input class="form-input" type="text" id="lastName" required />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="email">Email</label>
+                <input class="form-input" type="email" id="email" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="address">Address</label>
+                <input class="form-input" type="text" id="address" required />
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="city">City</label>
+                  <input class="form-input" type="text" id="city" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="zip">ZIP Code</label>
+                  <input class="form-input" type="text" id="zip" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="country">Country</label>
+                  <select class="form-select" id="country" required>
+                    <option value="">Select</option>
+                    <option>United States</option>
+                    <option>United Kingdom</option>
+                    <option>Germany</option>
+                    <option>Japan</option>
+                    <option>Australia</option>
+                  </select>
+                </div>
+              </div>
+
+              <h2 style="font-size: 1.25rem; margin: 32px 0 16px; font-family: var(--body-font); text-transform: none; letter-spacing: 0; font-weight: 700;">Payment</h2>
+              <div class="form-group">
+                <label class="form-label" for="cardNum">Card Number</label>
+                <input class="form-input" type="text" id="cardNum" placeholder="1234 5678 9012 3456" required />
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="form-group">
+                  <label class="form-label" for="exp">Expiry (MM/YY)</label>
+                  <input class="form-input" type="text" id="exp" placeholder="12/27" required />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="cvc">CVC</label>
+                  <input class="form-input" type="text" id="cvc" placeholder="123" required />
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <aside class="summary" id="summary">
+          <h2>Order Summary</h2>
+          <div class="summary-row"><span>Subtotal</span><span class="mono" id="sum-subtotal">$0.00</span></div>
+          <div class="summary-row"><span>Shipping</span><span class="mono" id="sum-shipping">$0.00</span></div>
+          <div class="summary-row"><span>Tax (8%)</span><span class="mono" id="sum-tax">$0.00</span></div>
+          <div class="promo-input">
+            <input type="text" placeholder="Promo code" id="promo-input"/>
+            <button class="btn btn-secondary" type="button" id="promo-apply">Apply</button>
+          </div>
+          <div class="summary-row" id="discount-row" style="display:none;"><span>Discount</span><span class="mono" id="sum-discount">-$0.00</span></div>
+          <div class="summary-row total"><span>Total</span><span class="mono" id="sum-total">$0.00</span></div>
+          <button class="btn btn-primary btn-block btn-lg" type="button" id="place-order-btn" style="margin-top: 20px;" onclick="placeOrder()">
+            <span class="material-symbols-outlined">lock</span>
+            Place Order
+          </button>
+          <p style="text-align: center; font-size: 0.8rem; color: var(--text-secondary); margin-top: 12px;">
+            Secure checkout · 256-bit SSL encryption
+          </p>
+        </aside>
+      </div>
+
+      <!-- Empty state -->
+      <div id="empty-state" style="display:none; text-align:center; padding: 80px 0;">
+        <span class="material-symbols-outlined" style="font-size: 80px; color: var(--text-muted);">shopping_bag</span>
+        <h2 style="margin: 16px 0 8px;">Your cart is empty</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 24px;">Browse our catalog and add a few favorites.</p>
+        <a href="shop.html" class="btn btn-primary btn-lg">Start Shopping</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="font-size:1.75rem">NEBULA</div>
+          <p class="footer-tagline">Designed for the future. Built for everyday life.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="shop.html?cat=audio">Audio</a></li>
+            <li><a href="shop.html?cat=wearables">Wearables</a></li>
+            <li><a href="shop.html?cat=tech">Tech</a></li>
+            <li><a href="shop.html?cat=living">Living</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Returns</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Nebula Inc. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+  <script>
+    let discount = 0;
+
+    function fmt(n) { return `$${n.toFixed(2)}`; }
+
+    function render() {
+      const cart = DCE.getCart();
+      const itemsEl = document.getElementById('cart-items');
+      const emptyEl = document.getElementById('empty-state');
+      const layout = document.querySelector('.cart-layout');
+      const summaryEl = document.getElementById('summary');
+
+      if (cart.length === 0) {
+        layout.style.display = 'none';
+        emptyEl.style.display = 'block';
+        return;
+      }
+      layout.style.display = 'grid';
+
+      itemsEl.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-img"><img src="${item.image}" alt="${item.name}"/></div>
+          <div class="cart-item-info">
+            <h3>${item.name}</h3>
+            <div class="cart-item-meta">SKU: ${item.id.toUpperCase()}</div>
+            <div class="cart-item-price">${fmt(item.price)}</div>
+          </div>
+          <div class="cart-item-actions">
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty('${item.id}', -1)">−</button>
+              <input class="qty-input" type="number" value="${item.qty}" readonly/>
+              <button class="qty-btn" onclick="changeQty('${item.id}', 1)">+</button>
+            </div>
+            <button class="btn btn-ghost" onclick="removeItem('${item.id}')" style="color: var(--error);">
+              <span class="material-symbols-outlined" style="font-size:18px;">delete</span>
+              Remove
+            </button>
+          </div>
+        </div>
+      `).join('');
+
+      const subtotal = DCE.cartTotal();
+      const shipping = subtotal >= 50 ? 0 : 9.99;
+      const tax = (subtotal - discount) * 0.08;
+      const total = subtotal - discount + shipping + tax;
+
+      document.getElementById('sum-subtotal').textContent = fmt(subtotal);
+      document.getElementById('sum-shipping').textContent = shipping === 0 ? 'FREE' : fmt(shipping);
+      document.getElementById('sum-tax').textContent = fmt(tax);
+      document.getElementById('sum-total').textContent = fmt(total);
+      if (discount > 0) {
+        document.getElementById('discount-row').style.display = 'flex';
+        document.getElementById('sum-discount').textContent = '-' + fmt(discount);
+      }
+    }
+
+    window.changeQty = function(id, delta) {
+      const cart = DCE.getCart();
+      const item = cart.find(i => i.id === id);
+      if (!item) return;
+      const newQty = item.qty + delta;
+      if (newQty < 1) {
+        DCE.removeFromCart(id);
+      } else {
+        DCE.updateCartQty(id, newQty);
+      }
+      render();
+    };
+
+    window.removeItem = function(id) {
+      DCE.removeFromCart(id);
+      render();
+    };
+
+    window.placeOrder = function() {
+      const cart = DCE.getCart();
+      if (cart.length === 0) {
+        DCE.showToast('Your cart is empty');
+        return;
+      }
+      const form = document.getElementById('checkout-form');
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+      DCE.showToast('Order placed successfully! Thank you.');
+      try { localStorage.removeItem('dce_cart'); } catch (e) {}
+      setTimeout(() => window.location.href = 'index.html', 1500);
+    };
+
+    document.getElementById('promo-apply').addEventListener('click', () => {
+      const code = document.getElementById('promo-input').value.trim().toUpperCase();
+      if (code === 'NEBULA10') {
+        discount = DCE.cartTotal() * 0.10;
+        DCE.showToast('Promo applied: 10% off');
+      } else if (code === 'FUTURE20') {
+        discount = DCE.cartTotal() * 0.20;
+        DCE.showToast('Promo applied: 20% off');
+      } else if (code) {
+        DCE.showToast('Invalid promo code');
+        discount = 0;
+      }
+      render();
+    });
+
+    render();
+  </script>
+</body>
+</html>
